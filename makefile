@@ -2,13 +2,17 @@ vpath %.c ./src
 vpath %.h ./inc
 
 CC = gcc
-SRC_PATH = ./src/
+SRC_PATH = ./src
 LINK_TARGET = app.exe
-INCLUDE_PATH = ./inc/
+INCLUDE_PATH = ./inc
 path = ./dependencies/
 
-OBJ = main.o LCD.o DIO.o
-DEP = main.d LCD.d DIO.d
+#OBJ = main.o LCD.o DIO.o
+#DEP = main.d LCD.d DIO.d
+SRC_FILES = $(wildcard src/*.c)
+OBJ := $(SRC_FILES:.c=.o)
+DEPS := $(SRC_FILES:.c=.d) 
+DEP = $(addprefix $(DEP_PATH)\,$(DEPS))
 CLEAN_TARGET = $(LINK_TARGET) $(OBJ)
 
 -include $(DEP)
