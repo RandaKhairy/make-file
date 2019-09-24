@@ -7,22 +7,23 @@ LINK_TARGET = app.exe
 INCLUDE_PATH = ./inc
 path = ./dependencies
 
-OBJ = main.o LCD.o DIO.o
-DEP = main.d LCD.d DIO.d
-#SRC_FILES = $(wildcard src/*.c)
-#OBJ := $(SRC_FILES:.c=.o)
-#DEPS := $(SRC_FILES:.c=.d) 
-#DEP = $(addprefix $(path)\,$(DEPS))
-CLEAN_TARGET = $(LINK_TARGET) $(OBJ) $(DEP)
+#OBJ = main.o LCD.o DIO.o
+#DEP = main.d LCD.d DIO.d
+SRC_FILES = $(wildcard src/*.c)
+OBJ := $(SRC_FILES:.c=.o)
+DEPS := $(SRC_FILES:.c=.d) 
+DEP = $(addprefix $(path)\,$(DEPS))
 
--include $(DEP)
+CLEAN_TARGET = $(LINK_TARGET) $(OBJ) $(DEPS)
+
+-include $(DEPS)
 all:$(LINK_TARGET)
 	echo Bulding done !
 clean:
 	-rm $(CLEAN_TARGET)
 	echo Cleaning done !
 
-$(LINK_TARGET): $(OBJ) quiz.o
+$(LINK_TARGET): $(OBJ) quiz.o 
 	$(CC) $(OBJ) quiz.o -o $@
 	echo Linking done !
 
