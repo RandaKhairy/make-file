@@ -9,14 +9,14 @@ path = ./dependencies
 
 #OBJ = main.o LCD.o DIO.o
 #DEP = main.d LCD.d DIO.d
-SRC_FILES = $(wildcard src/*.c)
+SRC_FILES = $(subst $(SRC_PATH)/,,$(wildcard $(SRC_PATH)/*.c))
 OBJ := $(SRC_FILES:.c=.o)
-DEPS := $(SRC_FILES:.c=.d) 
-DEP = $(addprefix $(path)\,$(DEPS))
+DEP = $(wildcard $(path)/*.d)
 
-CLEAN_TARGET = $(LINK_TARGET) $(OBJ) $(DEPS)
+CLEAN_TARGET = $(LINK_TARGET) $(OBJ) $(DEP)
 
--include $(DEPS)
+-include $(DEP)
+
 all:$(LINK_TARGET)
 	echo Bulding done !
 clean:
@@ -27,9 +27,7 @@ $(LINK_TARGET): $(OBJ) quiz.o
 	$(CC) $(OBJ) quiz.o -o $@
 	echo Linking done !
 
-%.d : %.c
-	$(CC) -M -I$(INCLUDE_PATH) $^ -o $@
-	
 %.o : %.c
 	$(CC) -c -I$(INCLUDE_PATH) $< -o $@
+	$(CC) -MM -I$(INCLUDE_PATH) $< > $(path)/$*.d
 
